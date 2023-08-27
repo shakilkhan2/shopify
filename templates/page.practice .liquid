@@ -1,0 +1,71 @@
+<style>
+  .number-checker {
+    text-align: center;
+    padding: 20px;
+  }
+
+  #inputNumber {
+    padding: 8px;
+    margin-right: 10px;
+  }
+
+  #checkButton {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  #resultMessage {
+    margin-top: 10px;
+  }
+</style>
+
+<div class="number-checker">
+  <input type="number" id="inputNumber" placeholder="Enter a number" />
+  <button id="checkButton">Check</button>
+  <p id="resultMessage"></p>
+</div>
+
+<script>
+  const checkButton = document.getElementById('checkButton');
+  const resultMessage = document.getElementById('resultMessage');
+
+  checkButton.addEventListener('click', () => {
+    const inputNumber = parseInt(document.getElementById('inputNumber').value);
+
+    {% if inputNumber != blank %}
+      {% if inputNumber | modulo: 2 == 0 %}
+        resultMessage.textContent = 'The number is even.';
+        resultMessage.style.color = 'green';
+      {% else %}
+        resultMessage.textContent = 'The number is odd.';
+        resultMessage.style.color = 'blue';
+      {% endif %}
+    {% else %}
+      resultMessage.textContent = 'Please enter a valid number.';
+      resultMessage.style.color = 'red';
+    {% endif %}
+  });
+</script>
+
+{% assign currentHour = 'then' | date: "%H" | plus: 0 %}
+
+{% if currentHour >= 0 and currentHour < 12 %}
+  <p>Good morning! Welcome to our store.</p>
+{% elsif currentHour >= 12 and currentHour < 18 %}
+  <p>Good afternoon! Explore our latest collections.</p>
+{% else %}
+  <p>Good evening! Discover great deals for night owls.</p>
+{% endif %}
+
+
+{% assign disp_custom_price = custom_price | money %}
+<p id="display-custom-price" style="display: none">{{disp_custom_price}}</p> 
+
+<script>
+  var mytext = document.getElementById("display-custom-price").innerHTML;
+ var mytext = {{disp_custom_price}};
+  document.getElementById("custom-price").innerHTML = mytext;
+</script>
